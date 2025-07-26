@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TODOリスト</title>
+    <style>
+        textarea{
+            width: 500px;
+            height: 30px;
+            font-size: 20px;
+        }
+        body{
+            background-color: rgb(245, 241, 241);
+        }
+    </style>
+</head>
+<body>
+    <h1>TODOリスト</h1>
+
+    <form action="/add" method="post">
+        <textarea name="title" placeholder="やることを入力" required></textarea>
+        <button type="submit">追加</button>
+    </form>
+
+    <ul>
+        <li th:each="todo : ${todos}">
+            <form action="/toggle" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${todo.id}" />
+                <button type="submit" th:text="${todo.completed} ? '✔' : '□'"></button>
+            </form>
+
+            <span th:text="${todo.title}" 
+                  th:style="${todo.completed} ? 'text-decoration: line-through;' : ''"></span>
+            <span th:text="'（' + ${todo.createdAt} + '）'"></span>
+
+            <form action="/delete" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${todo.id}" />
+                <button type="submit">削除</button>
+            </form>
+        </li>
+    </ul>
+</body>
+</html>
